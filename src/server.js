@@ -1,6 +1,7 @@
 import express from 'express';
-import { createServer } from 'http';
 import { ApolloServer } from 'apollo-server-express';
+import { createServer } from 'http';
+import UserApi from './datasource';
 
 class Server {
     constructor(config) {
@@ -26,6 +27,10 @@ class Server {
 
         this.Server = new ApolloServer({
             ...schema,
+            dataSources: () => {
+                const userApi = new UserApi();
+                return { userApi }; 
+            },
             onHealhCheck: () => new Promise((resolve) => {
                 resolve('Route is running');
             }),
@@ -41,7 +46,7 @@ class Server {
 
     run() {
         const { app, config: { port } } = this;
-       this.httpServer.listen(port, (err) => {
+        this.httpServer.listen(port, (err) => {
             if(err) {
                 console.log(err);
             }

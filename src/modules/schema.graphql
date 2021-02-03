@@ -5,8 +5,10 @@ type Query {
 
 type Mutation {
     createTrainee(user: CreateUserInput): User!
-    updateTrainee(id: ID!, role: String): User!
+    #updateTrainee(id: ID!, role: String): User!
+    updateTrainee(user: UpdateUserInput): User!
     deleteTrainee(id: ID!): User!
+    loginUser(payload: loginDataInput): String!
 }
 
 
