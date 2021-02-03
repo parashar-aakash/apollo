@@ -1,12 +1,12 @@
-import express from 'express';
+import Express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { createServer } from 'http';
-import UserApi from './datasource';
+import { UserApi, TraineeApi } from './datasource';
 
 class Server {
     constructor(config) {
         this.config = config;
-        this.app = express();
+        this.app = Express();
     }
 
     bootstrap() {
@@ -29,7 +29,14 @@ class Server {
             ...schema,
             dataSources: () => {
                 const userApi = new UserApi();
-                return { userApi }; 
+                const traineeApi = new TraineeApi();
+                return { userApi, traineeApi }; 
+            },
+            context: ({ req }) => {
+                if (req) {
+                    return { token: req.headers.authorization  };
+                }
+                return {};
             },
             onHealhCheck: () => new Promise((resolve) => {
                 resolve('Route is running');
