@@ -1,8 +1,14 @@
+
 import * as dotenv from 'dotenv';
-console.log(dotenv.config());
-const envVar = dotenv.config().parsed;
-console.log(envVar);
+const envVars = dotenv.config();
+
 const config = {
-  PORT: envVar.PORT,
+    port: envVars.parsed.PORT,
+    serviceUrl: envVars.parsed.SERVICE_URL
 };
+
+Object.freeze(
+    config
+);
+
 export default config;
